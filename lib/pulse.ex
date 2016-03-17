@@ -9,10 +9,11 @@ defmodule Pulse do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(Pulse.Directory, []),
-      worker(Pulse.Register, [[service: "test1", ttl: 15, heartbeat: 5, delay: 5]], id: Test.Test1Register),
-      worker(Pulse.Register, [[service: "test2", ttl: 15, heartbeat: 5, delay: 5]], id: Test.Test2Register),
-      worker(Pulse.Discover, [[service: "test1", ttl: 3, delay: 1]], id: Test.Test1Discover)
+      worker(Pulse.Directory, [])#,
+      # worker(Pulse.Register, [[service: "test1", ttl: 15, heartbeat: 5, delay: 5]], id: Test.Test1Register),
+      # worker(Pulse.Register, [[service: "test2", ttl: 15, heartbeat: 5, delay: 5]], id: Test.Test2Register),
+      # worker(Pulse.Discover, [[service: "test1", ttl: 3, delay: 1]], id: Test.Test1Discover),
+      # worker(Pulse.Discover, [[service: "test2", ttl: 3, delay: 1]], id: Test.Test2Discover)
     ]
 
     # Set options and start supervisor.

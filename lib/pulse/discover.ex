@@ -26,7 +26,7 @@ defmodule Pulse.Discover do
         nodes = Enum.map(body["node"]["nodes"] || [], fn(node) ->
             node["value"] |> String.to_atom
           end)
-        :ok
+        Pulse.Directory.update(service, nodes)
       {:ok, 404, _headers, _body} ->
         :ok
       _ ->
