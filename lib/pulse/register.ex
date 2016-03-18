@@ -26,7 +26,7 @@ defmodule Pulse.Register do
       {:ok, status, _headers, _body} when status == 200 or status == 201 ->
         :ok
       _ ->
-        Logger.error("Pulse.Register for service #{service}: #{inspect result}")
+        Logger.error("Pulse.Register failed for service #{service}: #{inspect result}")
     end
 
     # Schedule the next registration heartbeat.

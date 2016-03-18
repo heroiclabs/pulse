@@ -6,16 +6,16 @@ defmodule Pulse.Discover do
     GenServer.start_link(__MODULE__, args, [])
   end
 
-  def init([service: service, ttl: ttl, delay: delay]) do
+  def init([service: service, poll: poll, delay: delay]) do
     pid = self()
 
     # Schedule the first discover refresh.
     Process.send_after(pid, :discover, delay * 1000)
 
-    {:ok, [pid: pid, service: service, ttl: ttl]}
+    {:ok, [pid: pid, service: service, poll: poll]}
   end
 
-  def handle_info(:discover, [pid: pid, service: service, ttl: ttl] = state) do
+  def handle_info(:discover, [pid: pid, service: service, poll: poll] = state) do
     # Determine what the discover path will be.
     path = [Application.get_env(:pulse, :directory), service]
 
@@ -30,12 +30,11 @@ defmodule Pulse.Discover do
       {:ok, 404, _headers, _body} ->
         :ok
       _ ->
-        Logger.error("Pulse.Discover for service #{service}: #{inspect result}")
-        :ok
+        Logger.error("Pulse.Discover failed for service #{service}: #{inspect result}")
     end
 
     # Schedule the next discover refresh.
-    Process.send_after(pid, :discover, ttl * 1000)
+    Process.send_after(pid, :discover, poll * 1000)
     {:noreply, state}
   end
 

@@ -45,7 +45,7 @@ defmodule Pulse.Directory do
     service_nodes = services[service] || []
 
     # Connect new nodes as needed and update the state.
-    new_nodes = Pulse.Util.complement(nodes_snapshot, service_nodes)
+    new_nodes = complement(nodes_snapshot, service_nodes)
     {service_nodes, nodes} = Enum.reduce(new_nodes, {service_nodes, nodes}, fn(new_node, {service_nodes, nodes}) ->
         node_services = nodes[new_node]
         case node_services do
@@ -76,7 +76,7 @@ defmodule Pulse.Directory do
       end)
 
     # Disconnect missing nodes as needed.
-    missing_nodes = Pulse.Util.complement(service_nodes, nodes_snapshot)
+    missing_nodes = complement(service_nodes, nodes_snapshot)
     {service_nodes, nodes} = Enum.reduce(missing_nodes, {service_nodes, nodes}, fn(missing_node, {service_nodes, nodes}) ->
         node_services = nodes[missing_node]
         case node_services do
@@ -106,5 +106,14 @@ defmodule Pulse.Directory do
     {:reply, :ok, %{"services" => services, "nodes" => nodes}}
   end
 
-end
+  #
+  # Utilities.
+  #
 
+  defp complement(list1, list2) do
+    List.foldl(list2, list1, fn(item, acc) ->
+        List.delete(acc, item)
+      end)
+  end
+
+end
