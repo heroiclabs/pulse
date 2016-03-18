@@ -18,6 +18,7 @@ rel/example_project
 /_build
 /cover
 /deps
+/doc
 erl_crash.dump
 *.ez
 

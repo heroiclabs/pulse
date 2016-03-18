@@ -2,7 +2,7 @@ defmodule Pulse do
   use Application
 
   @moduledoc """
-  Service registration and discovery library for Elixir.
+  Service registration and discovery library for Elixir. Relies on etcd as an external service registry.
   """
 
   def start(_type, _args) do

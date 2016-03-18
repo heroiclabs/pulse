@@ -2,14 +2,32 @@ defmodule Pulse.Directory do
   use GenServer
   require Logger
 
-  #
-  # Pulse.Directory client API functions.
-  #
+  @moduledoc """
+  The `Pulse.Directory` module maintains connections and tracks available nodes registered for each discovered service. This module is monitored by Pulse internally, you do not need to start a worker to use it.
 
+  `Pulse.Directory.get/1` is the primary way to retrieve available nodes for any given discovered service.
+
+  ```elixir
+  > Pulse.Directory.get("my_service")
+  [:"my_machine1@ip-123-234-124-235.local", :"my_machine2@ip-123-234-124-235.local"]
+  ```
+
+  These nodes will already be connected by the `Pulse.Directory` process and are valid RPC targets if necessary. The directory also monitors connections and will unregister nodes from service lists if they disconnect.
+  """
+
+  @doc false
   def update(service, nodes_snapshot) do
     GenServer.call(__MODULE__, {:update, service, nodes_snapshot})
   end
 
+  @doc """
+  Retrieve a list of connected nodes that are registered to provide the given service.
+
+  ```elixir
+  > Pulse.Directory.get("my_service")
+  [:"my_machine1@ip-123-234-124-235.local", :"my_machine2@ip-123-234-124-235.local"]
+  ```
+  """
   def get(service) do
     GenServer.call(__MODULE__, {:get, service})
   end
@@ -18,6 +36,7 @@ defmodule Pulse.Directory do
   # Internal.
   #
 
+  @doc false
   def start_link() do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end

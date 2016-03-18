@@ -2,6 +2,36 @@ defmodule Pulse.Register do
   use GenServer
   require Logger
 
+  @moduledoc """
+  `Pulse.Register` is responsible for service registration. To use it, declare it as a worker in your application's supervision tree.
+
+  The module takes 4 parameters in a keyword list, for legibility:
+
+  * `service` - A binary indicating the service name to register.
+  * `ttl` - An integer indicating the number of seconds the registration should live unless refreshed.
+  * `heartbeat` - An integer indicating the number of seconds to wait between registration refreshes.
+  * `delay` - An integer indicating the number of seconds to wait before first registration.
+
+  ```elixir
+  children = [
+    worker(Pulse.Register, [[service: "my_service", ttl: 15, heartbeat: 5, delay: 5]])
+  ]
+  ```
+
+  Each `Pulse.Register` worker is only responsible for one service, but you can register the application as providing multiple services by declaring more than one worker.
+
+  ```elixir
+  children = [
+    worker(Pulse.Register, [[service: "my_service", ttl: 15, heartbeat: 5, delay: 5]], id: MyApp.MyServiceRegister),
+    worker(Pulse.Register, [[service: "my_other_service", ttl: 15, heartbeat: 5, delay: 5]], id: MyApp.MyOthereSrviceRegister)
+    # ...
+  ]
+  ```
+
+  The configuration options should be tuned for your application, however the values shown above are a good baseline.
+  """
+
+  @doc false
   def start_link(args) do
     GenServer.start_link(__MODULE__, args, [])
   end

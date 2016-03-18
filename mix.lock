@@ -6,4 +6,5 @@
   "metrics": {:hex, :metrics, "1.0.1"},
   "mimerl": {:hex, :mimerl, "1.0.2"},
   "poison": {:hex, :poison, "2.1.0"},
+  "sonic": {:hex, :sonic, "0.1.0"},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.6"}}

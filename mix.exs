@@ -1,7 +1,7 @@
 defmodule Pulse.Mixfile do
   use Mix.Project
 
-  @version "0.0.1"
+  @version "0.1.0"
 
   def project do
     [app: :pulse,
@@ -31,7 +31,7 @@ defmodule Pulse.Mixfile do
 
   # List of dependencies.
   defp deps do
-    [{:sonic, path: "../sonic"},
+    [{:sonic, "~> 0.1"},
 
      # Docs
      {:ex_doc, "~> 0.11", only: :dev},
@@ -41,7 +41,7 @@ defmodule Pulse.Mixfile do
   # Description.
   defp description do
     """
-    Service registration and discovery library for Elixir.
+    Service registration and discovery library for Elixir. Relies on etcd as an external service registry.
     """
   end
 
